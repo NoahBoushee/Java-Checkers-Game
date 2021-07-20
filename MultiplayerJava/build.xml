@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<!--
+    Noah Boushee
+    build.xml
+    Ant script for Java Game Server and Client
+    Does the things
+-->
+
+
+
+<project name="serverAndClient" default="compile" basedir=".">
+    <!-- define properties to use later -->
+    <property name="src.dir" location="src" />
+    <property name="build.dir" location="build" />
+    <property name="lib.dir" location="lib" />
+    <property name="docs.dir" location="docs" />
+
+
+    <presetdef name="javac">
+        <javac includeantruntime="false" />
+    </presetdef>
+
+    <path id="project.classpath">
+        <fileset dir="${lib.dir}" >
+            <include name="**/*.jar" />
+        </fileset>
+    </path>
+
+    <!-- delete existing directories (and contents) -->
+    <target name="clean" description="delete build artifacts">
+        <delete dir="${build.dir}" />
+        <delete dir="${docs.dir}" />
+    </target>
+
+
+    <!-- create output directory -->
+    <target name="init">
+        <mkdir dir="${build.dir}" />
+    </target>
+
+    
+    <target name="compile"
+        description="compile project source code"
+        depends="clean, init">
+        <javac 
+            srcdir="${src.dir}" 
+            destdir="${build.dir}"> 
+ 	    <classpath refid="project.classpath"/>
+       </javac>
+    </target>
+
+   <!--CHANGE THIS ONCE DEBUGGED-->
+   <!--RUN SERVER LIKE: ant server -Darg0=PORTNUMBER-->
+<!--
+   <target name="server" depends="compile" description="Runs a server">
+        <java dir="${build.dir}" classname="server_game.GameServerMain" fork="true">
+		<arg value="${arg0}"/>
+ 		<classpath refid="project.classpath"/>
+        </java>
+    </target>
+	
+    <target name="client" depends= "compile" description="Runs a game client">
+        <java dir="${build.dir}" classname="client_game.GameClient" fork="true">
+		<arg value="${arg0}"/>
+		<arg value="${arg1}"/>
+        </java>
+    </target> -->
+
+    <target name="gendocs" 
+            description="generate documentation"
+            depends="compile">
+        <javadoc sourcepath="${src.dir}" destdir="${docs.dir}" >
+            <classpath refid="project.classpath" />
+        </javadoc>
+    </target>
+	
+
+</project>
+    
+
